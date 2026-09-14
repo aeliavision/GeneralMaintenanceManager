@@ -1,0 +1,140 @@
+<Window x:Class="GeneralMaintenanceManager.App.Views.DeleteAssetConfirmationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource DeleteConfirmationTitle}"
+        Icon="../Assets/Branding/GeneralMaintenanceManagerIcon_multi.ico"
+        Width="540"
+        Height="510"
+        MinWidth="500"
+        MinHeight="470"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource AppBackgroundBrush}"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="78" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="28,24,28,22">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="46"
+                            Height="46"
+                            Background="{StaticResource ErrorSoftBrush}"
+                            BorderBrush="{StaticResource ErrorBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="23">
+                        <TextBlock Text="!"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource ErrorDarkBrush}" />
+                    </Border>
+                    <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{DynamicResource DeleteConfirmationEyebrow}"
+                                   FontSize="10"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource ErrorDarkBrush}" />
+                        <TextBlock Margin="0,4,0,0"
+                                   Text="{DynamicResource DeleteConfirmationHeading}"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </StackPanel>
+
+                <Border Margin="0,22,0,0"
+                        Padding="16,14"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderBrush="{StaticResource BorderStrongBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock x:Name="AssetIdentityText"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock Margin="0,7,0,0"
+                                   Text="{DynamicResource DeleteConfirmationArchiveMessage}"
+                                   FontSize="11"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="0,12,0,0"
+                        Padding="14,11"
+                        Background="{StaticResource WarningSoftBrush}"
+                        BorderBrush="{StaticResource WarningBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="7">
+                    <TextBlock Text="{DynamicResource DeleteConfirmationAssetReleaseMessage}"
+                               FontSize="11"
+                               Foreground="{StaticResource WarningDarkBrush}"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap" />
+                </Border>
+
+                <TextBlock Margin="0,22,0,0"
+                           Text="{DynamicResource DeleteConfirmationTypePrompt}"
+                           FontSize="12"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           TextWrapping="Wrap" />
+                <TextBlock Margin="0,10,0,5"
+                           Text="{DynamicResource DeleteConfirmationTypeLabel}"
+                           Style="{StaticResource FieldLabelStyle}" />
+                <TextBox x:Name="ConfirmationTextBox"
+                         Height="44"
+                         Style="{StaticResource FieldTextBoxStyle}"
+                         FontSize="14"
+                         FontWeight="SemiBold"
+                         CharacterCasing="Upper"
+                         MaxLength="16"
+                         TextChanged="ConfirmationTextBox_TextChanged" />
+                <TextBlock Margin="0,7,0,0"
+                           Text="{DynamicResource DeleteConfirmationUnlockHint}"
+                           FontSize="10"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="1"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,1,0,0">
+            <Grid Margin="28,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button Width="104"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Content="{DynamicResource Cancel}"
+                            IsCancel="True"
+                            Click="Cancel_Click" />
+                    <Button x:Name="ConfirmDeleteButton"
+                            Width="154"
+                            Style="{StaticResource DestructivePrimaryButtonStyle}"
+                            Content="{DynamicResource DeleteAssetAction}"
+                            IsEnabled="False"
+                            IsDefault="True"
+                            Click="ConfirmDelete_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

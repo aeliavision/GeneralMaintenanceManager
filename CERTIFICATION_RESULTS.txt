@@ -1,0 +1,41 @@
+﻿General Maintenance Manager production certification
+Run: 2026-09-14 06:57:47Z
+Windows: Microsoft Windows 11 Pro 10.0.26200 build 26200
+OS architecture: 64-bit
+Machine: WTS-DESKTOP
+Processor count: 8
+Current-architecture static verification: PASS
+Application version: 2.2.0
+Source ZIP layout/hygiene: PASS
+Source ZIP entries: 257
+Source ZIP SHA-256: cb6d02088c621155fba835aa002084feeef741540e1f7b70839421db9f4c2782
+.NET SDK: 10.0.401
+Clean: PASS
+Restore: PASS
+Release build: PASS
+Automated integrity tests: PASS
+Scale-100000 Target records: 100,000
+Scale-100000 Seed time: 00:00:31.8929748
+Scale-100000 First 200-row page: 63 ms
+Scale-100000 Second 200-row page: 50 ms
+Scale-100000 Filtered aggregate: 26 ms (count=500, cost=0.00)
+Scale-100000 Paging overlap: none
+Scale-100000 Scale harness: PASS
+Scale-100000 scale harness: PASS
+Six-year 1,000,000-total production stress: PENDING (rerun with -RunMillionScale)
+Portable writable-folder policy: PASS
+win-x64 packaged XAML/DI/startup smoke: PASS
+win-x64 startup-performance log: PASS
+win-x64 fresh master + current-year annual database creation: PASS
+win-x64 publish + ZIP layout: PASS
+win-x64 ZIP SHA-256: 94a13e42210c57100802af3ce4b88b22f354bb3d8dc379641a3c00a0e24874e6
+win-x86 packaged XAML/DI/startup smoke: PASS
+win-x86 startup-performance log: PASS
+win-x86 fresh master + current-year annual database creation: PASS
+win-x86 publish + ZIP layout: PASS
+win-x86 ZIP SHA-256: d0da76b5270fa84f12121796a0e5db97eeee61fd13d8f9aed41e26196c48089f
+Certification scope note: this report proves only the Windows machine on which it was executed. Run and retain evidence on Windows 10 and Windows 11 before claiming both-platform runtime certification.
+RESULT: AUTOMATED GATES PASS; FINAL MANUAL/REPRESENTATIVE-SCALE ACCEPTANCE PENDING
+Pending: manual WPF navigation/workflows, EN/AR/RTL visual review, responsive-window review, and real printing acceptance.
+Pending: representative six-year 1,000,000-total Maintenance stress run.
+Rerun with -RunMillionScale and -ManualAcceptanceConfirmed only after those checks actually pass.

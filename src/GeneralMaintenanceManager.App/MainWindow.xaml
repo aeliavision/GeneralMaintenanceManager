@@ -1,0 +1,285 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:views="clr-namespace:GeneralMaintenanceManager.App.Views" x:Class="GeneralMaintenanceManager.App.MainWindow" Title="{DynamicResource AppTitle}" Width="1360" Height="860" MinWidth="980" MinHeight="720" WindowStartupLocation="CenterScreen" Icon="Assets/Branding/GeneralMaintenanceManagerIcon_multi.ico" Background="{StaticResource AppBackgroundBrush}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Collapsible maintenance navigation. Expanded by default; collapses to a compact icon rail. -->
+        <Border Grid.Column="0" ClipToBounds="True" Background="{StaticResource SidebarBrush}" BorderBrush="{StaticResource SidebarBorderBrush}" BorderThickness="0,0,1,0">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Width" Value="240"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSidebarExpanded}" Value="False">
+                            <Setter Property="Width" Value="64"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="64"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Expanded brand header with a dedicated collapse control. -->
+                <Border Background="{StaticResource SidebarBrush}" BorderBrush="{StaticResource SidebarBorderBrush}" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid x:Name="ExpandedSidebarHeader" Margin="16,0,10,0">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSidebarExpanded}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="38"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="34"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Width="32" Height="32" VerticalAlignment="Center" Source="Assets/Branding/GeneralMaintenanceManagerIcon.png" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="7,0,0,0">
+                                <TextBlock Text="{DynamicResource BrandName}" FontSize="15" FontWeight="Bold"/>
+                                <TextBlock Text="{DynamicResource BrandSubtitle}" Margin="0,1,0,0" FontSize="9" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button Grid.Column="2" Style="{StaticResource SidebarIconButtonStyle}" Command="{Binding ToggleSidebarCommand}" ToolTip="{DynamicResource TooltipCollapseNavigation}">
+                                <TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="13" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </Button>
+                        </Grid>
+
+                        <!-- The compact rail keeps one obvious control available to restore the full sidebar. -->
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ToggleSidebarCommand}" ToolTip="{DynamicResource TooltipExpandNavigation}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource SidebarIconButtonStyle}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSidebarExpanded}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- Human-first navigation grouped by operational priority. -->
+                <StackPanel Grid.Row="1" Margin="8,18,8,0">
+                    <StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Visible"/><Style.Triggers><DataTrigger Binding="{Binding IsSidebarExpanded}" Value="False"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></StackPanel.Style>
+
+                    <TextBlock Margin="12,0,0,8" Text="{DynamicResource SidebarSectionOverview}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    <Button Command="{Binding ShowDashboardCommand}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarNavButtonStyle}"><Style.Triggers><DataTrigger Binding="{Binding IsDashboardView}" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryBrush}"/><Setter Property="Foreground" Value="{StaticResource SurfaceBrush}"/></DataTrigger></Style.Triggers></Style></Button.Style><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="14" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="1" Text="{DynamicResource SidebarOverview}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></Grid></Button>
+
+                    <TextBlock Margin="12,18,0,8" Text="{DynamicResource SidebarSectionMaintenance}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    <Button Command="{Binding ShowWorkOrdersCommand}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarNavButtonStyle}"><Style.Triggers><DataTrigger Binding="{Binding IsWorkOrdersView}" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryBrush}"/><Setter Property="Foreground" Value="{StaticResource SurfaceBrush}"/></DataTrigger></Style.Triggers></Style></Button.Style><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="14" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="1" Text="{DynamicResource SidebarWorkOrders}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="2" Margin="8,0,2,0" Text="{Binding OpenWorkOrderCount, StringFormat={}{0:N0}}" FontSize="9" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></Grid></Button>
+                    <Button Margin="0,6,0,0" Command="{Binding ShowMaintenanceCommand}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarNavButtonStyle}"><Style.Triggers><DataTrigger Binding="{Binding IsMaintenanceView}" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryBrush}"/><Setter Property="Foreground" Value="{StaticResource SurfaceBrush}"/></DataTrigger></Style.Triggers></Style></Button.Style><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="14" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="1" Text="{DynamicResource SidebarMaintenanceRecords}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></Grid></Button>
+                    <Button Margin="0,6,0,0" Command="{Binding ShowPreventiveCommand}" Visibility="{Binding IsPreventiveMaintenanceEnabled, Converter={StaticResource BoolToVisibilityConverter}}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarNavButtonStyle}"><Style.Triggers><DataTrigger Binding="{Binding IsPreventiveView}" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryBrush}"/><Setter Property="Foreground" Value="{StaticResource SurfaceBrush}"/></DataTrigger></Style.Triggers></Style></Button.Style><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="14" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="1" Text="{DynamicResource SidebarPreventivePlans}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="2" Margin="8,0,2,0" Text="{Binding DueMaintenancePlanCount, StringFormat={}{0:N0}}" FontSize="9" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"><TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Visible"/><Style.Triggers><DataTrigger Binding="{Binding DueMaintenancePlanCount}" Value="0"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock></Grid></Button>
+                    <Button Margin="0,6,0,0" Command="{Binding ShowAssetCommand}" Visibility="{Binding IsAssetTrackingEnabled, Converter={StaticResource BoolToVisibilityConverter}}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarNavButtonStyle}"><Style.Triggers><DataTrigger Binding="{Binding IsAssetView}" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryBrush}"/><Setter Property="Foreground" Value="{StaticResource SurfaceBrush}"/></DataTrigger></Style.Triggers></Style></Button.Style><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="14" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="1" Text="{DynamicResource SidebarAssets}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></Grid></Button>
+
+                    <TextBlock Margin="12,18,0,8" Text="{DynamicResource SidebarSectionReporting}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    <Button Command="{Binding ShowReportsCommand}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarNavButtonStyle}"><Style.Triggers><DataTrigger Binding="{Binding IsReportsView}" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryBrush}"/><Setter Property="Foreground" Value="{StaticResource SurfaceBrush}"/></DataTrigger></Style.Triggers></Style></Button.Style><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="14" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="1" Text="{DynamicResource SidebarReportsHistory}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></Grid></Button>
+
+                    <TextBlock Margin="12,18,0,8" Text="{DynamicResource SidebarSectionSystem}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    <Button Command="{Binding ShowSettingsCommand}"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource SidebarNavButtonStyle}"><Style.Triggers><DataTrigger Binding="{Binding IsSettingsView}" Value="True"><Setter Property="Background" Value="{StaticResource PrimaryBrush}"/><Setter Property="Foreground" Value="{StaticResource SurfaceBrush}"/></DataTrigger></Style.Triggers></Style></Button.Style><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="14" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/><TextBlock Grid.Column="1" Text="{DynamicResource SidebarSettings}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/></Grid></Button>
+                </StackPanel>
+
+                <!-- Compact navigation preserves the same priority order and human labels in tooltips. -->
+                <StackPanel Grid.Row="1" Margin="8,18,8,0" HorizontalAlignment="Center">
+                    <StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsSidebarExpanded}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></StackPanel.Style>
+                    <Button Width="48" Height="44" Padding="0" Command="{Binding ShowDashboardCommand}" ToolTip="{DynamicResource SidebarOverview}"><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16"/></Button>
+                    <Button Width="48" Height="44" Margin="0,6,0,0" Padding="0" Command="{Binding ShowWorkOrdersCommand}" ToolTip="{DynamicResource SidebarWorkOrders}"><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16"/></Button>
+                    <Button Width="48" Height="44" Margin="0,6,0,0" Padding="0" Command="{Binding ShowMaintenanceCommand}" ToolTip="{DynamicResource SidebarMaintenanceRecords}"><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16"/></Button>
+                    <Button Width="48" Height="44" Margin="0,6,0,0" Padding="0" Command="{Binding ShowPreventiveCommand}" ToolTip="{DynamicResource SidebarPreventivePlans}" Visibility="{Binding IsPreventiveMaintenanceEnabled, Converter={StaticResource BoolToVisibilityConverter}}"><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16"/></Button>
+                    <Button Width="48" Height="44" Margin="0,6,0,0" Padding="0" Command="{Binding ShowAssetCommand}" ToolTip="{DynamicResource SidebarAssets}" Visibility="{Binding IsAssetTrackingEnabled, Converter={StaticResource BoolToVisibilityConverter}}"><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16"/></Button>
+                    <Button Width="48" Height="44" Margin="0,14,0,0" Padding="0" Command="{Binding ShowReportsCommand}" ToolTip="{DynamicResource SidebarReportsHistory}"><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16"/></Button>
+                    <Button Width="48" Height="44" Margin="0,14,0,0" Padding="0" Command="{Binding ShowSettingsCommand}" ToolTip="{DynamicResource SidebarSettings}"><TextBlock Text="" FontFamily="{StaticResource IconFontFamily}" FontSize="16"/></Button>
+                </StackPanel>
+
+                <!-- Live local-database indicator; Settings is part of the ordered navigation above. -->
+                <StackPanel Grid.Row="2" Margin="8,0,8,14">
+                    <StackPanel.Style><Style TargetType="StackPanel"><Setter Property="Visibility" Value="Visible"/><Style.Triggers><DataTrigger Binding="{Binding IsSidebarExpanded}" Value="False"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger></Style.Triggers></Style></StackPanel.Style>
+                    <Border Margin="4,0,4,0" Padding="12,11" Background="{StaticResource PortablePanelBrush}" BorderBrush="{StaticResource PortablePanelBorderBrush}" BorderThickness="1" CornerRadius="7">
+                        <StackPanel>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal"><Ellipse Width="7" Height="7" Fill="{StaticResource SuccessBrush}" VerticalAlignment="Center"/><TextBlock Margin="7,0,0,0" Text="{DynamicResource PortableSQLite}" FontSize="10" FontWeight="Bold"/></StackPanel>
+                                <TextBlock HorizontalAlignment="Right" Text="{DynamicResource Offline}" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SuccessDarkBrush}"/>
+                            </Grid>
+                            <TextBlock Margin="0,8,0,0" Text="{DynamicResource Year}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <ComboBox x:Name="SidebarYearSelector"
+                                      Margin="0,4,0,0"
+                                      Height="32"
+                                      Style="{StaticResource ModernComboBoxStyle}"
+                                      ItemsSource="{Binding Years}"
+                                      SelectedItem="{Binding SelectedYear, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                <Border Grid.Row="2" Width="44" Height="44" Margin="0,0,0,14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="{StaticResource PortablePanelBrush}" BorderBrush="{StaticResource PortablePanelBorderBrush}" BorderThickness="1" CornerRadius="8" ToolTip="{DynamicResource PortableSqliteTooltip}">
+                    <Border.Style><Style TargetType="Border"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsSidebarExpanded}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Border.Style>
+                    <Grid><TextBlock Text="{DynamicResource DatabaseShort}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/><Ellipse Width="7" Height="7" Fill="{StaticResource SuccessBrush}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8,8,0"/></Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Application workspace -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="28"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top utility bar -->
+            <Border Grid.Row="0" Height="64" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsAssetView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                            <DataTrigger Binding="{Binding IsReviewView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                            <DataTrigger Binding="{Binding IsSettingsView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid>
+                    <!-- Asset toolbar -->
+                    <Grid Margin="22,0">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAssetView}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding AssetWorkspaceTitle}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{DynamicResource AllFacilities}" Margin="0,1,0,0" FontSize="13" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <TextBox Grid.Column="1" Margin="16,0,18,0" MinWidth="180" HorizontalAlignment="Stretch" VerticalAlignment="Center" Style="{StaticResource SearchTextBoxStyle}" Tag="{DynamicResource SearchPlaceholder}" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
+                            <TextBlock Text="{DynamicResource Year}" Margin="0,0,7,0" VerticalAlignment="Center" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <ComboBox Width="125" Style="{StaticResource ModernComboBoxStyle}" ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear, Mode=TwoWay}"/>
+                        </StackPanel>
+
+                        <Button Grid.Column="3" VerticalAlignment="Center" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding AddAssetCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="+" Margin="0,-1,7,0" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource OnPrimaryBrush}"/>
+                                <TextBlock Text="{DynamicResource AddAsset}" Foreground="{StaticResource OnPrimaryBrush}"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <!-- Review toolbar -->
+                    <Grid Margin="22,0">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsReviewView}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource ReviewWorkspace}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{DynamicResource ReviewPending}" Margin="0,1,0,0" FontSize="13" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Padding="10,5" Background="{StaticResource WarningSoftBrush}" BorderBrush="{StaticResource WarningBorderBrush}" BorderThickness="1" CornerRadius="5" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding ReviewCount, StringFormat={}{0:N0}}" FontSize="11" FontWeight="Bold" Foreground="{StaticResource WarningDarkBrush}"/>
+                        </Border>
+                    </Grid>
+
+                    <!-- Reports toolbar -->
+                    <Grid Margin="22,0">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsReportsView}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource ReportsWorkspace}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{DynamicResource ReportsToolbarTitle}" Margin="0,1,0,0" FontSize="13" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Settings toolbar -->
+                    <Grid Margin="22,0">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSettingsView}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource Application}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Text="{DynamicResource Settings}" Margin="0,1,0,0" FontSize="13" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <views:DashboardView Grid.Row="1">
+                <views:DashboardView.Style><Style TargetType="views:DashboardView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsDashboardView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:DashboardView.Style>
+            </views:DashboardView>
+            <views:MaintenanceView Grid.Row="1">
+                <views:MaintenanceView.Style><Style TargetType="views:MaintenanceView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsMaintenanceView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:MaintenanceView.Style>
+            </views:MaintenanceView>
+            <views:WorkOrdersView Grid.Row="1">
+                <views:WorkOrdersView.Style><Style TargetType="views:WorkOrdersView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsWorkOrdersView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:WorkOrdersView.Style>
+            </views:WorkOrdersView>
+            <views:PreventiveMaintenanceView Grid.Row="1">
+                <views:PreventiveMaintenanceView.Style><Style TargetType="views:PreventiveMaintenanceView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsPreventiveView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:PreventiveMaintenanceView.Style>
+            </views:PreventiveMaintenanceView>
+<views:AssetsView Grid.Row="1"><views:AssetsView.Style><Style TargetType="views:AssetsView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsAssetView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:AssetsView.Style></views:AssetsView><!-- Data review: keep the list as the scrolling surface so WPF virtualization remains active. -->
+            <views:ReviewView Grid.Row="1"><views:ReviewView.Style><Style TargetType="views:ReviewView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsReviewView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:ReviewView.Style></views:ReviewView><!-- Reports: maintenance-first operational reporting. -->
+            <views:ReportsView Grid.Row="1">
+                <views:ReportsView.Style><Style TargetType="views:ReportsView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsReportsView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:ReportsView.Style>
+            </views:ReportsView>
+
+            <!-- Settings: intentionally limited to data-management actions that used to clutter the sidebar. -->
+            <views:SettingsView Grid.Row="1"><views:SettingsView.Style><Style TargetType="views:SettingsView"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsSettingsView}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></views:SettingsView.Style></views:SettingsView><!-- Quiet status bar -->
+            <Border Grid.Row="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+                <Grid Margin="22,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Ellipse Width="6" Height="6" Fill="{StaticResource SuccessBrush}" Margin="0,0,7,0"/>
+                        <TextBlock Text="{Binding StatusText}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                    <ProgressBar HorizontalAlignment="Right" Width="100" Height="3" VerticalAlignment="Bottom" Foreground="{StaticResource SecondaryBrush}" IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

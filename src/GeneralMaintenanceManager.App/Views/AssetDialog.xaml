@@ -1,0 +1,263 @@
+<Window x:Class="GeneralMaintenanceManager.App.Views.AssetDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource AssetWindowTitle}"
+        Icon="../Assets/Branding/GeneralMaintenanceManagerIcon_multi.ico"
+        Width="760"
+        Height="790"
+        MinWidth="760"
+        MinHeight="790"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource AppBackgroundBrush}"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="92" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="72" />
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="24,0">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource EyebrowStyle}" Text="{DynamicResource PermanentAssetRecord}" />
+                    <TextBlock Margin="0,4,0,0" Text="{Binding Title}" FontSize="21" FontWeight="SemiBold" />
+                    <TextBlock Margin="0,2,0,0"
+                               Text="{DynamicResource PermanentIdentityDescription}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="11" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="24,18,24,16">
+                <Border Style="{StaticResource CardStyle}" Padding="18">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource Identity}" />
+                        <Grid Margin="0,9,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="1.35*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource AssetNumberOptional}" />
+                                <TextBox Text="{Binding AssetNumber, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox" BasedOn="{StaticResource FieldTextBoxStyle}">
+                                            <Setter Property="IsReadOnly" Value="True" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsAssetNumberEditable}" Value="True">
+                                                    <Setter Property="IsReadOnly" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                                <TextBlock Margin="1,5,0,0"
+                                           FontSize="9.5"
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           Text="{DynamicResource AssetNumberLockedEditHint}"
+                                           TextWrapping="Wrap">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsAssetNumberEditable}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource AssetNameRequired}" />
+                                <TextBox Style="{StaticResource FieldTextBoxStyle}"
+                                         Text="{Binding AssetName, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Border Margin="0,16,0,14" Height="1" Background="{StaticResource BorderBrush}" />
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource Location}" />
+                        <Grid Margin="0,9,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Site}" />
+                                <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding Site, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Location}" />
+                                <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding Location, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Border Margin="0,16,0,14" Height="1" Background="{StaticResource BorderBrush}" />
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource DeviceDetails}" />
+                        <Grid Margin="0,9,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="14" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="14" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="14" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource AssetCategory}" />
+                                <ComboBox Style="{StaticResource ModernComboBoxStyle}"
+                                          ItemsSource="{Binding AssetCategories}"
+                                         
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding AssetCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="2">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource OperationalStatus}" />
+                                <ComboBox Style="{StaticResource ModernComboBoxStyle}"
+                                          ItemsSource="{Binding OperationalStatuses}"
+                                         
+                                          SelectedValuePath="Value"
+                                          SelectedValue="{Binding OperationalStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="0">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Manufacturer}" />
+                                <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding Manufacturer, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="2">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Country}" />
+                                <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding Country, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="4" Grid.Column="0">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Model}" />
+                                <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="2">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource SerialNumber}" />
+                                <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="6" Grid.Column="0">
+                                <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Condition}" />
+                                <ComboBox Style="{StaticResource ModernComboBoxStyle}"
+                                          ItemsSource="{Binding Conditions}"
+                                              SelectedValuePath="Value"
+                                          SelectedValue="{Binding Condition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <Grid Grid.Row="6" Grid.Column="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource TechnicalSpecification}" />
+                                    <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding TechnicalSpecification, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource RecordedPrice}" />
+                                    <TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding PriceText, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+
+                        <Border Margin="0,16,0,14" Height="1" Background="{StaticResource BorderBrush}" />
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource Notes}" />
+                        <TextBox Margin="0,9,0,0"
+                                 Height="68"
+                                 Style="{StaticResource FieldTextBoxStyle}"
+                                 VerticalContentAlignment="Top"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="0,10,0,0"
+                        Padding="11,9"
+                        Background="{StaticResource ErrorSoftBrush}"
+                        BorderBrush="{StaticResource ErrorBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ValidationMessage}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Text="{Binding ValidationMessage}"
+                               Foreground="{StaticResource ErrorDarkBrush}"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap" />
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+            <Grid Margin="24,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="18" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Width="132"
+                        VerticalAlignment="Center"
+                        Content="{DynamicResource DeleteAssetAction}"
+                        Click="Delete_Click">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource DangerButtonStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <TextBlock Grid.Column="2"
+                           VerticalAlignment="Center"
+                           Text="{DynamicResource PermanentNumberFooter}"
+                           FontSize="10"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" />
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Width="96" Margin="0,0,9,0"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Content="{DynamicResource Cancel}"
+                            IsCancel="True"
+                            Click="Cancel_Click" />
+                    <Button Width="128"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Content="{DynamicResource Save}"
+                            IsDefault="True"
+                            Click="Save_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,134 @@
+<Window x:Class="GeneralMaintenanceManager.App.Views.WorkOrderDetailsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource WorkOrderDetails}" Width="820" Height="900" MinWidth="720" MinHeight="680"
+        WindowStartupLocation="CenterOwner" Background="{StaticResource AppBackgroundBrush}" ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="78"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="68"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+            <Grid Margin="24,0">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{DynamicResource WorkOrderRecord}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                    <TextBlock Margin="0,2,0,0" Text="{Binding Title}" FontSize="21" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Margin="0,2,0,0" Text="{Binding WorkOrderNumber}" FontSize="10.5" Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24,18,24,20">
+                <Border Style="{StaticResource CardStyle}" Padding="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Status}"/><TextBlock Text="{Binding Status}" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="1"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Priority}"/><TextBlock Text="{Binding Priority}" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource MaintenanceType}"/><TextBlock Text="{Binding MaintenanceTypeText}" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="3"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Category}"/><TextBlock Text="{Binding Category}" FontWeight="SemiBold"/></StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Margin="0,10,0,0" Style="{StaticResource CardStyle}" Padding="16">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource WorkOrderScope}"/>
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Asset}"/><TextBlock Text="{Binding AssetName}"/><TextBlock Text="{Binding AssetNumber}" FontSize="9.5" Foreground="{StaticResource TextSecondaryBrush}"/></StackPanel>
+                            <StackPanel Grid.Column="1"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Site}"/><TextBlock Text="{Binding Site}"/></StackPanel>
+                            <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Location}"/><TextBlock Text="{Binding Location}"/></StackPanel>
+                            <StackPanel Grid.Column="3"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource AssignedTo}"/><TextBlock Text="{Binding AssignedTo}"/></StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="0,10,0,0" Style="{StaticResource CardStyle}" Padding="16">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource RequestAndSchedule}"/>
+                        <TextBlock Margin="0,12,0,0" Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource ProblemDescription}"/>
+                        <TextBlock Text="{Binding Problem}" TextWrapping="Wrap"/>
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource RequestedBy}"/><TextBlock Text="{Binding RequestedBy}"/></StackPanel>
+                            <StackPanel Grid.Column="1"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource ReportedAt}"/><TextBlock Text="{Binding ReportedAt}"/></StackPanel>
+                            <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource DueDate}"/><TextBlock Text="{Binding DueDate}"/></StackPanel>
+                            <StackPanel Grid.Column="3"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource StartedAt}"/><TextBlock Text="{Binding StartedAt}"/></StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="0,10,0,0" Style="{StaticResource CardStyle}" Padding="16">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource CompletionDetails}"/>
+                        <TextBlock Margin="0,12,0,0" Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource WorkPerformedDone}"/>
+                        <TextBlock Text="{Binding WorkPerformed}" TextWrapping="Wrap"/>
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource PerformedBy}"/><TextBlock Text="{Binding PerformedBy}"/></StackPanel>
+                            <StackPanel Grid.Column="1"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource CompletedAt}"/><TextBlock Text="{Binding CompletedAt}"/></StackPanel>
+                            <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Cost}"/><TextBlock Text="{Binding Cost}"/></StackPanel>
+                            <StackPanel Grid.Column="3"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource DowntimeHours}"/><TextBlock Text="{Binding DowntimeHours}"/></StackPanel>
+                        </Grid>
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource ConditionAfter}"/><TextBlock Text="{Binding ConditionAfter}"/></StackPanel>
+                            <StackPanel Grid.Column="1"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource OperationalStatusAfter}"/><TextBlock Text="{Binding OperationalStatusAfter}"/></StackPanel>
+                        </Grid>
+                        <TextBlock Margin="0,14,0,0" Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource MaterialsParts}"/><TextBlock Text="{Binding MaterialsOrPartsNotes}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,14,0,0" Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource CompletionNotes}"/><TextBlock Text="{Binding CompletionNotes}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="0,10,0,0" Style="{StaticResource CardStyle}" Padding="16">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="{DynamicResource RecordAudit}"/>
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                            <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource CreatedBy}"/><TextBlock Text="{Binding CreatedBy}"/></StackPanel>
+                            <StackPanel Grid.Column="1"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource CreatedAt}"/><TextBlock Text="{Binding CreatedAt}"/></StackPanel>
+                            <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource LastModifiedBy}"/><TextBlock Text="{Binding LastModifiedBy}"/></StackPanel>
+                            <StackPanel Grid.Column="3"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Revision}"/><TextBlock Text="{Binding Revision}"/></StackPanel>
+                        </Grid>
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource LastModifiedAt}"/>
+                            <TextBlock Text="{Binding LastModifiedAt}" FontSize="9.5" Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Margin="0,10,0,0" Style="{StaticResource CardStyle}" Padding="16" Visibility="{Binding HasGeneratedMaintenanceRecord, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource GeneratedMaintenanceRecord}"/>
+                        <TextBlock Margin="0,4,0,0" Text="{Binding GeneratedMaintenanceNumber}" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Margin="0,10,0,0" Style="{StaticResource CardStyle}" Padding="0">
+                    <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="46"/><RowDefinition Height="210"/></Grid.RowDefinitions>
+                        <TextBlock Margin="16,0" VerticalAlignment="Center" Text="{DynamicResource ActivityTimeline}" FontSize="14" FontWeight="SemiBold"/>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding Activities}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HeadersVisibility="Column" GridLinesVisibility="None" BorderThickness="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{DynamicResource Date}" Binding="{Binding DateText}" Width="1.15*" MinWidth="125" ElementStyle="{StaticResource DataGridSingleLineTextStyle}"/>
+                                <DataGridTextColumn Header="{DynamicResource Activity}" Binding="{Binding ActivityText}" Width="1.25*" MinWidth="135" ElementStyle="{StaticResource DataGridSingleLineTextStyle}"/>
+                                <DataGridTextColumn Header="{DynamicResource Description}" Binding="{Binding Description}" Width="3*" MinWidth="280" ElementStyle="{StaticResource DataGridNarrativeTextStyle}"/>
+                                <DataGridTextColumn Header="{DynamicResource By}" Binding="{Binding ChangedBy}" Width="0.9*" MinWidth="95" ElementStyle="{StaticResource DataGridSingleLineTextStyle}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="24,0">
+                <Button Width="118" Margin="0,0,8,0" Style="{StaticResource SecondaryButtonStyle}" Content="{DynamicResource Edit}" Click="Edit_Click" IsEnabled="{Binding CanEdit}"/>
+                <Button Width="188" Margin="0,0,8,0" Style="{StaticResource SecondaryButtonStyle}" Content="{DynamicResource OpenMaintenanceRecord}" Click="OpenMaintenance_Click" Visibility="{Binding HasGeneratedMaintenanceRecord, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Button Width="110" Margin="0,0,8,0" Style="{StaticResource SecondaryButtonStyle}" Content="{DynamicResource Print}" Click="Print_Click"/>
+                <Button Width="100" Style="{StaticResource PrimaryButtonStyle}" Content="{DynamicResource Close}" IsCancel="True" Click="Close_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

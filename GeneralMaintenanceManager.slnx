@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="src/GeneralMaintenanceManager.Core/GeneralMaintenanceManager.Core.csproj" />
+  <Project Path="src/GeneralMaintenanceManager.Infrastructure/GeneralMaintenanceManager.Infrastructure.csproj" />
+  <Project Path="src/GeneralMaintenanceManager.App/GeneralMaintenanceManager.App.csproj" />
+  <Project Path="tests/GeneralMaintenanceManager.Tests/GeneralMaintenanceManager.Tests.csproj" />
+  <Project Path="tools/GeneralMaintenanceManager.ScaleHarness/GeneralMaintenanceManager.ScaleHarness.csproj" />
+</Solution>

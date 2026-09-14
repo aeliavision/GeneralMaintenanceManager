@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/GeneralMaintenanceManager.Core/GeneralMaintenanceManager.Core.csproj" />
+    <ProjectReference Include="../../src/GeneralMaintenanceManager.Infrastructure/GeneralMaintenanceManager.Infrastructure.csproj" />
+    <ProjectReference Include="../../src/GeneralMaintenanceManager.App/GeneralMaintenanceManager.App.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../src/GeneralMaintenanceManager.App/Localization/Strings.en.xaml" Link="Localization/Strings.en.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/Localization/Strings.ar.xaml" Link="Localization/Strings.ar.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/MainWindow.xaml" Link="UiContracts/MainWindow.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/Views/WorkOrdersView.xaml" Link="UiContracts/WorkOrdersView.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/Views/MaintenanceView.xaml" Link="UiContracts/MaintenanceView.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/Views/ReportsView.xaml" Link="UiContracts/ReportsView.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/Views/SettingsView.xaml" Link="UiContracts/SettingsView.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/Services/PrintService.cs" Link="UiContracts/PrintService.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/ViewModels/MainViewModel.cs" Link="UiContracts/MainViewModel.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/ViewModels/Features/MainViewModel.WorkOrders.cs" Link="UiContracts/MainViewModel.WorkOrders.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/ViewModels/Features/MainViewModel.Maintenance.cs" Link="UiContracts/MainViewModel.Maintenance.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/ViewModels/Features/MainViewModel.Presentation.cs" Link="UiContracts/MainViewModel.Presentation.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/GeneralMaintenanceManager.App/ViewModels/Features/MainViewModel.PreventiveMaintenance.cs" Link="UiContracts/MainViewModel.PreventiveMaintenance.cs" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

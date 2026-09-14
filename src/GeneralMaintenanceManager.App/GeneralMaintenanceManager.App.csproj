@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>GeneralMaintenanceManager</AssemblyName>
+    <RootNamespace>GeneralMaintenanceManager.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Branding\GeneralMaintenanceManagerIcon_multi.ico</ApplicationIcon>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Branding\GeneralMaintenanceManagerIcon.png" />
+    <Resource Include="Assets\Branding\GeneralMaintenanceManagerIcon_multi.ico" />
+    <None Include="Assets\Branding\GeneralMaintenanceManagerIcon_32x32.ico" />
+    <None Include="Assets\Branding\GeneralMaintenanceManagerIcon_48x48.ico" />
+    <None Include="Assets\Branding\GeneralMaintenanceManagerIcon_64x64.ico" />
+    <None Include="Assets\Branding\GeneralMaintenanceManagerIcon_256x256.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../GeneralMaintenanceManager.Core/GeneralMaintenanceManager.Core.csproj" />
+    <ProjectReference Include="../GeneralMaintenanceManager.Infrastructure/GeneralMaintenanceManager.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../SampleData/General Maintenance Assets.csv"
+          Link="SampleData/General Maintenance Assets.csv"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

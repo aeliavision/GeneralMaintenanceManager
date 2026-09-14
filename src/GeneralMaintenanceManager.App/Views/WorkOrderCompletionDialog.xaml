@@ -1,0 +1,31 @@
+<Window x:Class="GeneralMaintenanceManager.App.Views.WorkOrderCompletionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource CompleteWorkOrder}" Width="690" Height="700" MinWidth="610" MinHeight="580" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner"
+        Background="{StaticResource AppBackgroundBrush}" ShowInTaskbar="False">
+    <Grid><Grid.RowDefinitions><RowDefinition Height="78"/><RowDefinition Height="*"/><RowDefinition Height="68"/></Grid.RowDefinitions>
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"><StackPanel Margin="24,0" VerticalAlignment="Center">
+            <TextBlock Text="{Binding WorkOrderLabel}" FontSize="10" Foreground="{StaticResource PrimaryBrush}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Title}" FontSize="19" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+        </StackPanel></Border>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"><StackPanel Margin="24,18"><Border Style="{StaticResource CardStyle}" Padding="18"><StackPanel>
+            <TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource WorkPerformedRequired}"/><TextBox Height="92" Style="{StaticResource FieldTextBoxStyle}" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" Text="{Binding WorkPerformed}"/>
+            <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource PerformedBy}"/><TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding PerformedBy}"/></StackPanel>
+                <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource Cost}"/><TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding CostText}"/></StackPanel>
+            </Grid>
+            <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource ConditionAfter}"/><TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding ConditionAfter}"/></StackPanel>
+                <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource OperationalStatusAfter}"/><TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding OperationalStatusAfter}"/></StackPanel>
+            </Grid>
+            <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                <StackPanel><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource DowntimeHours}"/><TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding DowntimeText}"/></StackPanel>
+                <StackPanel Grid.Column="2"><TextBlock Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource MaterialsParts}"/><TextBox Style="{StaticResource FieldTextBoxStyle}" Text="{Binding Materials}"/></StackPanel>
+            </Grid>
+            <TextBlock Margin="0,14,0,0" Style="{StaticResource FieldLabelStyle}" Text="{DynamicResource CompletionNotes}"/><TextBox Height="64" Style="{StaticResource FieldTextBoxStyle}" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding CompletionNotes}"/>
+        </StackPanel></Border><TextBlock Margin="2,10,0,0" Text="{Binding ValidationMessage}" Foreground="{StaticResource ErrorDarkBrush}"/></StackPanel></ScrollViewer>
+        <Border Grid.Row="2" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0"><StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="24,0">
+            <Button Width="96" Margin="0,0,9,0" Style="{StaticResource SecondaryButtonStyle}" Content="{DynamicResource Cancel}" IsCancel="True"/>
+            <Button Width="145" Style="{StaticResource PrimaryButtonStyle}" Content="{DynamicResource CompleteWorkOrder}" Click="Save_Click" IsDefault="True"/>
+        </StackPanel></Border>
+    </Grid>
+</Window>

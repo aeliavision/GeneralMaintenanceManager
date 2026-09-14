@@ -1,0 +1,38 @@
+<UserControl x:Class="GeneralMaintenanceManager.App.Views.PreventiveMaintenanceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="22,18,22,14">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="14"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <StackPanel><TextBlock Style="{StaticResource EyebrowStyle}" Text="{DynamicResource ScheduledMaintenance}"/><TextBlock Margin="0,2,0,0" Text="{DynamicResource PreventiveMaintenance}" FontSize="24" FontWeight="SemiBold"/><TextBlock Margin="0,3,18,0" Text="{DynamicResource PreventiveSubtitle}" FontSize="11" TextWrapping="Wrap" Foreground="{StaticResource TextSecondaryBrush}"/></StackPanel>
+            <Button Grid.Column="1" VerticalAlignment="Bottom" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding NewMaintenancePlanCommand}" Content="{DynamicResource NewMaintenancePlan}"/>
+        </Grid>
+        <Border Grid.Row="2" Style="{StaticResource CardStyle}" Padding="0">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="52"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <Border Padding="16,0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"><Grid><StackPanel VerticalAlignment="Center"><TextBlock Text="{DynamicResource PreventiveMaintenance}" FontSize="14" FontWeight="SemiBold"/><TextBlock Margin="0,2,0,0" Text="{DynamicResource PreventiveListHint}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/></StackPanel><Border HorizontalAlignment="Right" VerticalAlignment="Center" Padding="8,3" Background="{StaticResource SecondarySoftBrush}" CornerRadius="10"><TextBlock Text="{Binding MaintenancePlans.Count, StringFormat={}{0:N0}}" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryBrush}"/></Border></Grid></Border>
+                <Grid Grid.Row="1">
+                    <DataGrid x:Name="MaintenancePlansGrid" MouseDoubleClick="MaintenancePlansGrid_MouseDoubleClick" Style="{StaticResource ModernDataGridStyle}" ItemsSource="{Binding MaintenancePlans}" SelectedItem="{Binding SelectedMaintenancePlan, Mode=TwoWay}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="{DynamicResource Location}" Width="1.1*" SortMemberPath="Location"><DataGridTemplateColumn.CellTemplate><DataTemplate><StackPanel><TextBlock Text="{Binding Location}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/><TextBlock Margin="0,2,0,0" Text="{Binding Site}" FontSize="9.5" Foreground="{StaticResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis"/></StackPanel></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="{DynamicResource Subject}" Width="1.45*" SortMemberPath="PlanName"><DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding PlanName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="{DynamicResource PreventiveTask}" Width="2.6*" SortMemberPath="Instructions"><DataGridTemplateColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Instructions}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Instructions}"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+                            <DataGridTextColumn Header="{DynamicResource Frequency}" Binding="{Binding FrequencyValue, Mode=OneWay}" Width="80"/>
+                            <DataGridTextColumn Header="{DynamicResource NextDueDate}" Binding="{Binding NextDueDate, Mode=OneWay}" Width="110"/>
+                            <DataGridTextColumn Header="{DynamicResource AssignedTo}" Binding="{Binding AssignedTo, Mode=OneWay}" Width="1*"/>
+                            <DataGridCheckBoxColumn Header="{DynamicResource Active}" Binding="{Binding IsActive, Mode=OneWay}" Width="70"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Border Background="{StaticResource SurfaceBrush}" IsHitTestVisible="False"><Border.Style><Style TargetType="Border"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding HasItems, ElementName=MaintenancePlansGrid}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Border.Style><StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="380"><TextBlock Text="{DynamicResource NoPreventivePlansTitle}" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/><TextBlock Margin="0,4,0,0" Text="{DynamicResource NoPreventivePlansHint}" TextWrapping="Wrap" TextAlignment="Center" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/></StackPanel></Border>
+                </Grid>
+                <Border Grid.Row="2" Padding="16,10" Background="{StaticResource SurfaceTintBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="{DynamicResource DuePlans}" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}"/><TextBlock Margin="6,0,0,0" Text="{Binding DueMaintenancePlanCount}" FontWeight="Bold"/></StackPanel>
+                        <WrapPanel Margin="0,9,0,0" HorizontalAlignment="Right"><Button Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding PrintMaintenancePlanCommand}" Content="{DynamicResource PrintEvent}"/><Button Margin="0,0,8,8" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding TogglePlanActiveCommand}" Content="{DynamicResource PauseResumePlan}"/><Button Margin="0,0,0,8" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding GeneratePlanWorkOrderCommand}" Content="{DynamicResource GenerateWorkOrder}"/></WrapPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

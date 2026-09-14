@@ -1,0 +1,4 @@
+﻿AssetNumber,AssetName,Category,Site,Location,Manufacturer,Country,Model,SerialNumber,Condition,OperationalStatus,TechnicalSpecification,PurchaseDate,PurchasePrice,InstallationDate,WarrantyExpiryDate,Notes
+GEN-001,Emergency Generator,Generator,Main Site,Utility Room,Cummins,USA,C150,DG-001,Good,In Service,150 kVA / 400 V,2024-01-15,18000,2024-02-01,2027-01-15,Quarterly preventive maintenance
+HVAC-014,Split Air Conditioner,HVAC,Main Site,Office 204,Daikin,Japan,FTXM50,AC-014,Good,In Service,18000 BTU / 220 V,2025-04-10,1200,2025-04-12,2027-04-10,
+VEH-003,Service Van,Vehicle,Main Site,Garage,Toyota,Japan,Hiace,VAN-003,Fair,In Service,Diesel / 2.8L,2023-06-01,30000,2023-06-05,2026-06-01,
