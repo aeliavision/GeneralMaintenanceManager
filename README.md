@@ -54,4 +54,76 @@ You've probably noticed there are a *lot* of PowerShell scripts sitting in the r
 ### Development Utilities (Fake Data Generators)
 *   `generate-live-test-database.ps1` & `install-live-test-database.ps1` - Generates and installs a massive, fake database so developers can test the UI with a lot of data.
 *   `benchmark-live-test-database.ps1` - Tests the speed of that fake database.
-*   `generate-multiyear-stress-databases.ps1` & `install-multiyear-stress-fixture.ps1` - Generates test data that spans across multiple years (which is super helpful since the app separates data by year).  
+*   `generate-multiyear-stress-databases.ps1` & `install-multiyear-stress-fixture.ps1` - Generates test data that spans across multiple years (which is super helpful since the app separates data by year).
+
+## How to Run a Complete Local Test & Certification
+
+If you want to manually build, run tests, and certify the application locally, you can use the following runbook. Open PowerShell and run these steps sequentially:
+
+### 1. Preparation
+Navigate to your source folder and allow scripts to run in your current session.
+```powershell
+cd "E:\Downloads\New folder\GeneralMaintenanceManager-v2.2.0-buildfix20-verifier-fix-final-clean-source"
+Set-ExecutionPolicy -Scope Process Bypass
+```
+
+### 2. Static Source Verification
+Verify the core maintenance logic and dependencies.
+```powershell
+.\verify-maintenance-first.ps1
+```
+
+### 3. Restore, Build, and Automated Tests
+Compile the codebase and run all unit tests.
+```powershell
+.\build.ps1
+```
+
+### 4. Manual Testing
+Run the application to verify the UI and features manually. **Close the application before continuing to the next steps.**
+```powershell
+dotnet run --project ".\src\GeneralMaintenanceManager.App\GeneralMaintenanceManager.App.csproj" --configuration Release
+```
+
+### 5. Generate Production-Scale Stress Database
+Create a massive database for performance testing (1,000,000 Maintenance records and 100,000 Work Orders across 6 years).
+```powershell
+.\stress-test.ps1 -Reset -TotalRecords 1000000 -WorkOrders 100000 -IncludeActivity -IncludeBackup
+```
+
+### 6. Run Benchmark Stress Test
+Re-run the stress test against the generated database to measure performance without regenerating data.
+```powershell
+.\stress-test.ps1 -BenchmarkOnly -TotalRecords 1000000 -WorkOrders 100000 -IncludeActivity -IncludeBackup
+```
+
+### 7. View Stress Report
+Check the results of the stress tests.
+```powershell
+Get-Content ".\release\stress-runs\GMM-Full-Production\StressReport.txt"
+```
+
+### 8. Production Certification
+Run the final suite to certify that the application is ready for production.
+```powershell
+.\certify-production.ps1
+```
+
+### 9. View Certification Results
+Check if the certification passed.
+```powershell
+Get-Content ".\CERTIFICATION_RESULTS.txt"
+```
+
+### 10. Publish Windows Release
+Generate the final binaries and deployment packages.
+```powershell
+.\publish-windows.ps1
+```
+
+### 11. View Release Files
+Check the output directory for your compiled packages.
+```powershell
+Get-ChildItem ".\release" -Recurse | Select-Object FullName, Length
+Get-ChildItem ".\release\packages" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName, Length
+```
