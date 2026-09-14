@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="GMM.png" alt="General Maintenance Manager Poster" width="100%">
+</p>
+
 # General Maintenance Manager
 
 **Application version:** 2.2.0  
