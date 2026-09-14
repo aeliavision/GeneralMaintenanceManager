@@ -6,7 +6,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 
 if ([string]::IsNullOrWhiteSpace($FixtureDirectory)) {
     $candidate = Get-ChildItem -LiteralPath (Join-Path $root "release") -Directory -Filter "stress-fixture-*" -ErrorAction SilentlyContinue |

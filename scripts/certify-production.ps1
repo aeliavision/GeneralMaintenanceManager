@@ -7,7 +7,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $solution = Join-Path $root "GeneralMaintenanceManager.slnx"
 $report = Join-Path $root "CERTIFICATION_RESULTS.txt"
 
@@ -95,7 +96,7 @@ function Add-MillionStressEvidence(
     [System.Collections.Generic.List[string]]$Lines
 ) {
     $output = [System.Collections.Generic.List[string]]::new()
-    & .\stress-test.ps1 -Reset -TotalRecords 1000000 -WorkOrders 100000 -FromYear ((Get-Date).Year - 5) -ToYear (Get-Date).Year -IncludeActivity -IncludeBackup 2>&1 | ForEach-Object {
+    & (Join-Path $scriptDir "stress-test.ps1") -Reset -TotalRecords 1000000 -WorkOrders 100000 -FromYear ((Get-Date).Year - 5) -ToYear (Get-Date).Year -IncludeActivity -IncludeBackup 2>&1 | ForEach-Object {
         $item = $_.ToString()
         [void]$output.Add($item)
         Write-Host $item
@@ -214,7 +215,7 @@ try {
     $lines.Add("Run: " + (Get-Date).ToString("u"))
     Add-EnvironmentEvidence $lines
 
-    & .\verify-maintenance-first.ps1 -AllowGeneratedArtifacts
+    & (Join-Path $scriptDir "verify-maintenance-first.ps1") -AllowGeneratedArtifacts
     $lines.Add("Current-architecture static verification: PASS")
 
     [xml]$props = Get-Content -Path (Join-Path $root "Directory.Build.props") -Raw
@@ -223,7 +224,7 @@ try {
     $lines.Add("Application version: $version")
 
     # Create and inspect the clean source package before build artifacts exist.
-    & .\package-source.ps1
+    & (Join-Path $scriptDir "package-source.ps1")
     $sourceZip = Join-Path $root "release\packages\GeneralMaintenanceManager-v$version-source.zip"
     Test-SourcePackage $sourceZip $lines
 
@@ -247,7 +248,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Automated tests failed." }
     $lines.Add("Automated integrity tests: PASS")
 
-    Add-ScaleEvidence "Scale-$ScaleRecords" { & .\run-scale-harness.ps1 -Records $ScaleRecords } $lines
+    Add-ScaleEvidence "Scale-$ScaleRecords" { & (Join-Path $scriptDir "run-scale-harness.ps1") -Records $ScaleRecords } $lines
     if ($RunMillionScale.IsPresent) {
         Add-MillionStressEvidence $lines
     }
@@ -264,7 +265,7 @@ try {
     }
     $lines.Add("Portable writable-folder policy: PASS")
 
-    & .\publish-windows.ps1 -Configuration $Configuration -SkipVerification
+    & (Join-Path $scriptDir "publish-windows.ps1") -Configuration $Configuration -SkipVerification
     Add-Type -AssemblyName System.IO.Compression.FileSystem
 
     foreach ($rid in @("win-x64", "win-x86")) {

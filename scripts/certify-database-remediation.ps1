@@ -10,7 +10,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $certificationDirectory = Join-Path $root "release\certification"
 $report = Join-Path $certificationDirectory "DB10_DATABASE_CERTIFICATION_RESULTS.txt"
 New-Item -ItemType Directory -Force -Path $certificationDirectory | Out-Null
@@ -44,7 +45,7 @@ $lines.Add("")
 try {
     if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { throw "dotnet.exe was not found on PATH." }
 
-    & (Join-Path $root "verify-maintenance-first.ps1") -AllowGeneratedArtifacts
+    & (Join-Path $scriptDir "verify-maintenance-first.ps1") -AllowGeneratedArtifacts
     $lines.Add("Static architecture verifier: PASS")
 
     $stressArgs = @{
@@ -58,7 +59,7 @@ try {
     if (-not $SkipActivityHeavy.IsPresent) { $stressArgs.IncludeActivity = $true }
     if (-not $SkipBackupRestore.IsPresent) { $stressArgs.IncludeBackup = $true }
 
-    & (Join-Path $root "stress-test.ps1") @stressArgs
+    & (Join-Path $scriptDir "stress-test.ps1") @stressArgs
 
     $stressReport = Join-Path (Split-Path -Parent $DataPath) "StressReport.txt"
     if (-not (Test-Path -LiteralPath $stressReport)) { throw "DB-10 stress evidence report was not created: $stressReport" }

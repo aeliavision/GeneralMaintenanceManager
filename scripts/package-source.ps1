@@ -1,10 +1,11 @@
-﻿param(
+param(
     [string]$OutputDirectory = ""
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 [xml]$props = Get-Content -Path (Join-Path $root "Directory.Build.props") -Raw
 $version = ([string]$props.Project.PropertyGroup.Version).Trim()
 if ([string]::IsNullOrWhiteSpace($version)) { throw "Could not read Version from Directory.Build.props." }
@@ -15,7 +16,7 @@ $stage = Join-Path ([System.IO.Path]::GetTempPath()) "GeneralMaintenanceManager-
 $zipPath = Join-Path $OutputDirectory "GeneralMaintenanceManager-v$version-source.zip"
 
 try {
-    & (Join-Path $root "verify-maintenance-first.ps1") -AllowGeneratedArtifacts
+    & (Join-Path $scriptDir "verify-maintenance-first.ps1") -AllowGeneratedArtifacts
     if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
     New-Item -ItemType Directory -Force -Path $stage | Out-Null
 

@@ -10,7 +10,8 @@ param(
 )
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $data = [System.IO.Path]::GetFullPath($DataDirectory)
 $stressRoot = [System.IO.Path]::GetFullPath((Join-Path $root "release\stress-runs"))
 $prefix = $stressRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
@@ -20,7 +21,7 @@ if (-not $data.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)
 if (-not (Test-Path -LiteralPath (Join-Path $data ".gmm-stress-run"))) {
     throw "Refusing to benchmark unmarked data directory: $data"
 }
-& (Join-Path $root "run-million-stress-test.ps1") `
+& (Join-Path $scriptDir "run-million-stress-test.ps1") `
     -Year $Year -DataRoot $data -BenchmarkOnly -KeepData `
     -WorkOrders $WorkOrders -Lookups $Lookups -Workers $Workers `
     -QueriesPerWorker $QueriesPerWorker -MaxWorkingSetMb $MaxWorkingSetMb `

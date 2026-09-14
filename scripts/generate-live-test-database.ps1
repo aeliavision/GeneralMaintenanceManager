@@ -7,7 +7,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $output = [System.IO.Path]::GetFullPath((Join-Path $root $OutputDirectory))
 $stressRoot = [System.IO.Path]::GetFullPath((Join-Path $root "release\stress-runs"))
 $prefix = $stressRoot.TrimEnd([System.IO.Path]::DirectorySeparatorChar, [System.IO.Path]::AltDirectorySeparatorChar) + [System.IO.Path]::DirectorySeparatorChar
@@ -25,7 +26,7 @@ if (Test-Path -LiteralPath $data) {
 }
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 
-& (Join-Path $root "run-million-stress-test.ps1") `
+& (Join-Path $scriptDir "run-million-stress-test.ps1") `
     -Year $Year `
     -DataRoot $data `
     -WorkOrders $WorkOrders `

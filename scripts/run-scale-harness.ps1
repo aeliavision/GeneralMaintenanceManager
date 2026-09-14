@@ -7,10 +7,11 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 
 if ($Million.IsPresent) {
-    $millionScript = Join-Path $root "run-million-stress-test.ps1"
+    $millionScript = Join-Path $scriptDir "run-million-stress-test.ps1"
     if (-not (Test-Path -LiteralPath $millionScript)) {
         throw "Million-record stress wrapper not found: $millionScript"
     }

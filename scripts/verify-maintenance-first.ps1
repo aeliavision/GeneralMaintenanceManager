@@ -4,7 +4,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $appRoot = Join-Path $root "src\GeneralMaintenanceManager.App"
 $coreRoot = Join-Path $root "src\GeneralMaintenanceManager.Core"
 $infraRoot = Join-Path $root "src\GeneralMaintenanceManager.Infrastructure"
@@ -421,12 +422,12 @@ foreach ($testFile in @(
 $oldPhaseTests = @(Get-ChildItem -Path $testsRoot -File -Filter '*Phase*Tests.cs')
 if ($oldPhaseTests.Count -ne 0) { throw "Phase-numbered legacy test files remain: $($oldPhaseTests.Name -join ', ')" }
 if (-not (Test-Path (Join-Path $root 'tools\GeneralMaintenanceManager.ScaleHarness\GeneralMaintenanceManager.ScaleHarness.csproj'))) { throw "Optional scale harness project is missing." }
-if (-not (Test-Path (Join-Path $root 'run-scale-harness.ps1'))) { throw "Scale harness runner is missing." }
-if (-not (Test-Path (Join-Path $root 'run-million-stress-test.ps1'))) { throw "Dedicated million-record stress runner is missing." }
-if (-not (Test-Path (Join-Path $root 'generate-multiyear-stress-databases.ps1'))) { throw "DB-10 multi-year stress fixture runner is missing." }
-if (-not (Test-Path (Join-Path $root 'certify-database-remediation.ps1'))) { throw "DB-10 database remediation certification runner is missing." }
+if (-not (Test-Path (Join-Path $scriptDir 'run-scale-harness.ps1'))) { throw "Scale harness runner is missing." }
+if (-not (Test-Path (Join-Path $scriptDir 'run-million-stress-test.ps1'))) { throw "Dedicated million-record stress runner is missing." }
+if (-not (Test-Path (Join-Path $scriptDir 'generate-multiyear-stress-databases.ps1'))) { throw "DB-10 multi-year stress fixture runner is missing." }
+if (-not (Test-Path (Join-Path $scriptDir 'certify-database-remediation.ps1'))) { throw "DB-10 database remediation certification runner is missing." }
 foreach ($tool in @('stress-test.ps1','generate-live-test-database.ps1','benchmark-live-test-database.ps1','install-live-test-database.ps1')) {
-    if (-not (Test-Path (Join-Path $root $tool))) { throw "MedEquip Architecture Adoption tool is missing: $tool" }
+    if (-not (Test-Path (Join-Path $scriptDir $tool))) { throw "MedEquip Architecture Adoption tool is missing: $tool" }
 }
 $scaleHarness = Get-Content -Path (Join-Path $root 'tools\GeneralMaintenanceManager.ScaleHarness\Program.cs') -Raw
 $solutionText = Get-Content -Path (Join-Path $root 'GeneralMaintenanceManager.slnx') -Raw
@@ -439,11 +440,11 @@ Assert-Contains $scaleHarness '=== Generating master Work Orders' "Multi-year fi
 Assert-Contains $scaleHarness 'NormalizeLegacySyntheticAssetGuidStorageAsync' "Scale harness cannot repair pre-buildfix13 lowercase synthetic AssetId values in an existing project-local corpus."
 Assert-Contains $scaleHarness 'CreateDeterministicAssetGuid((sequence % 100) + 1) : (object)DBNull.Value' "Scale harness must bind synthetic AssetId values as Guid objects rather than lowercase strings."
 Assert-NotContains $scaleHarness 'CreateDeterministicAssetGuid((sequence % 100) + 1).ToString()' "Scale harness synthetic AssetId seeding regressed to case-sensitive lowercase Guid text."
-$millionStressRunner = Get-Content -Path (Join-Path $root 'run-million-stress-test.ps1') -Raw
-$multiYearStressRunner = Get-Content -Path (Join-Path $root 'generate-multiyear-stress-databases.ps1') -Raw
-$dbCertificationRunner = Get-Content -Path (Join-Path $root 'certify-database-remediation.ps1') -Raw
-$liveStressGenerator = Get-Content -Path (Join-Path $root 'generate-live-test-database.ps1') -Raw
-$benchmarkLiveStress = Get-Content -Path (Join-Path $root 'benchmark-live-test-database.ps1') -Raw
+$millionStressRunner = Get-Content -Path (Join-Path $scriptDir 'run-million-stress-test.ps1') -Raw
+$multiYearStressRunner = Get-Content -Path (Join-Path $scriptDir 'generate-multiyear-stress-databases.ps1') -Raw
+$dbCertificationRunner = Get-Content -Path (Join-Path $scriptDir 'certify-database-remediation.ps1') -Raw
+$liveStressGenerator = Get-Content -Path (Join-Path $scriptDir 'generate-live-test-database.ps1') -Raw
+$benchmarkLiveStress = Get-Content -Path (Join-Path $scriptDir 'benchmark-live-test-database.ps1') -Raw
 Assert-Contains $multiYearStressRunner '[long]$TotalRecords = 1000000' "Multi-year fixture runner must default to 1,000,000 Maintenance rows total."
 Assert-Contains $multiYearStressRunner '--total-records=$TotalRecords' "Multi-year fixture runner does not pass the total-record contract to the ScaleHarness."
 Assert-NotContains $multiYearStressRunner '[long]$RecordsPerYear = 1000000' "Multi-year fixture runner regressed to 1,000,000 rows per year."
@@ -512,7 +513,7 @@ $settingsView = Get-Content -Path (Join-Path $appRoot 'Views\SettingsView.xaml')
 $productionSettingsVm = Get-Content -Path (Join-Path $featureVmDir 'MainViewModel.ProductionSettings.cs') -Raw
 $printSettings = Get-Content -Path (Join-Path $appRoot 'Services\PrintSettings.cs') -Raw
 $printService = Get-Content -Path (Join-Path $appRoot 'Services\PrintService.cs') -Raw
-$humanStressRunner = Get-Content -Path (Join-Path $root 'stress-test.ps1') -Raw
+$humanStressRunner = Get-Content -Path (Join-Path $scriptDir 'stress-test.ps1') -Raw
 $adoptionTests = Get-Content -Path (Join-Path $testsRoot 'MedEquipArchitectureAdoptionTests.cs') -Raw
 
 Assert-Contains $contextFactory '_masterOptions' "Production baseline: master EF options are not cached."
@@ -695,7 +696,7 @@ if (-not $AllowGeneratedArtifacts.IsPresent -and $buildDirs.Count -ne 0) {
     throw "Generated build/test directories are present in the clean source tree: $($buildDirs.FullName -join ', ')"
 }
 
-$requiredDocs = @('USER_GUIDE.md','DEVELOPER_GUIDE.md')
+$requiredDocs = @('USER_GUIDE.md','DEVELOPER_GUIDE.md','README.md')
 foreach ($doc in $requiredDocs) {
     if (-not (Test-Path (Join-Path $root $doc))) { throw "Required project document is missing: $doc" }
 }

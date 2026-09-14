@@ -1,16 +1,17 @@
-﻿param(
+param(
     [string]$Configuration = "Release",
     [switch]$SkipTests
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $solution = Join-Path $root "GeneralMaintenanceManager.slnx"
 
 Push-Location $root
 try {
-    & .\verify-maintenance-first.ps1 -AllowGeneratedArtifacts
+    & (Join-Path $scriptDir "verify-maintenance-first.ps1") -AllowGeneratedArtifacts
 
     Write-Host "Using .NET SDK:" -ForegroundColor Cyan
     $sdk = (dotnet --version).Trim()

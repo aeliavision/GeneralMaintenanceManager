@@ -15,7 +15,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $project = Join-Path $root "tools\GeneralMaintenanceManager.ScaleHarness\GeneralMaintenanceManager.ScaleHarness.csproj"
 $reportDirectory = Join-Path $root "release\certification"
 $report = Join-Path $reportDirectory "MILLION_RECORD_STRESS_RESULTS.txt"

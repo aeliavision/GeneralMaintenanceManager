@@ -1,4 +1,4 @@
-﻿param(
+param(
     [switch]$FrameworkDependent,
     [string]$Configuration = "Release",
     [string[]]$Architectures = @("win-x64", "win-x86"),
@@ -9,7 +9,8 @@
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $scriptDir
 $project = Join-Path $root "src\GeneralMaintenanceManager.App\GeneralMaintenanceManager.App.csproj"
 $releaseRoot = Join-Path $root "release"
 $packagesRoot = Join-Path $releaseRoot "packages"
@@ -54,7 +55,7 @@ function Ensure-ZipDirectoryEntries([string]$ZipPath) {
 
 Push-Location $root
 try {
-    if (-not $SkipVerification.IsPresent) { & .\verify-maintenance-first.ps1 -AllowGeneratedArtifacts }
+    if (-not $SkipVerification.IsPresent) { & (Join-Path $scriptDir "verify-maintenance-first.ps1") -AllowGeneratedArtifacts }
     $version = Get-ProjectVersion
     $supported = @("win-x64", "win-x86")
     foreach ($architecture in $Architectures) {
